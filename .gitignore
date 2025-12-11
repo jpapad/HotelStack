@@ -3,6 +3,7 @@ node_modules
 
 # Builds
 apps/api/dist
+apps/api/*.tsbuildinfo
 apps/web/.next
 apps/web/out
 
@@ -16,6 +17,7 @@ pnpm-debug.log*
 .DS_Store
 
 # Env overrides (example env files are committed)
+.env
 .env.*.local
 
 # Misc

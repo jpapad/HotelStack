@@ -51,7 +51,15 @@ docker compose up -d postgres
 pnpm install
 ```
 
-3. Run API + web:
+3. Set up the database:
+
+```bash
+cd apps/api
+pnpm db:migrate
+pnpm db:seed
+```
+
+4. Run API + web:
 
 ```bash
 pnpm dev
@@ -59,6 +67,14 @@ pnpm dev
 
 - API: http://localhost:3001 (`/` and `/health`)
 - Web: http://localhost:3000
+
+### Database commands
+
+From the `apps/api` directory:
+
+- `pnpm db:migrate` — Run pending migrations with Prisma
+- `pnpm db:seed` — Seed the database with test data
+- `pnpm prisma studio` — Open Prisma Studio to view/edit data (requires running in the `apps/api` directory)
 
 ## Docker (full stack)
 
@@ -73,5 +89,14 @@ docker compose up --build
 
 ## Notes
 
+- The API uses Prisma ORM with a comprehensive schema (`apps/api/prisma/schema.prisma`) modeling:
+  - **User** roles: RECEPTION, MANAGER, HOUSEKEEPING
+  - **Property** with nested rooms, reservations, stays, and financial records
+  - **Reservation** states: PENDING, CONFIRMED, CHECKED_IN, CHECKED_OUT, CANCELLED
+  - **Room** status tracking: AVAILABLE, OCCUPIED, MAINTENANCE, CLEANING
+  - **Financial records**: Charges, Payments with status tracking
+  - **HousekeepingTask** status: PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+  - **ActivityLog** for audit trails
+- Test data is seeded by default, allowing QA to log in with pre-configured users (see `prisma/seed.ts`)
 - The API exposes a placeholder endpoint at `/` and a `/health` endpoint that also checks database connectivity.
 - The web app includes a React Query provider and a placeholder page that fetches the API response.
