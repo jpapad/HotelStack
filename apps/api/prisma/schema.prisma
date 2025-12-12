@@ -306,9 +306,13 @@ model ActivityLog {
   propertyId String
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
+  userId String?
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
   createdAt DateTime @default(now())
 
   @@index([propertyId])
   @@index([createdAt])
   @@index([entityId])
+  @@index([userId])
 }
